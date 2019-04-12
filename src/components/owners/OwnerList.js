@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-class OwnersList extends Component {
+class OwnerList extends Component {
     render() {
         return (
             <section className="owners content">
@@ -9,7 +9,7 @@ class OwnersList extends Component {
             {
                 this.props.owners.map(owner =>
                     <div key={owner.id}>
-                        {owner.name}
+                        {owner.name} {owner.phoneNumber}
                     </div>
                 )
             }
@@ -18,4 +18,4 @@ class OwnersList extends Component {
     }
 }
 
-export default OwnersList
+export default OwnerList

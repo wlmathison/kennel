@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import AnimalList from './animal/AnimalList'
 import LocationList from './location/LocationList'
 import EmployeeList from './employee/EmployeeList'
-import OwnersList from "./owners/OwnersList"
+import OwnerList from "./owners/OwnerList"
 
 
 class ApplicationViews extends Component {
@@ -55,7 +55,7 @@ class ApplicationViews extends Component {
                     return <EmployeeList employees={this.state.employees} />
                 }} />
                 <Route path="/owners" render={(props) => {
-                    return <OwnersList owners={this.state.owners} />
+                    return <OwnerList owners={this.state.owners} />
                 }} />
             </React.Fragment>
         )
