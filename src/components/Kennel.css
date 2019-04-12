@@ -3,3 +3,7 @@
     justify-content: space-around;
     flex-direction: row;
 }
+
+.content {
+    margin-top: 50px;
+}
