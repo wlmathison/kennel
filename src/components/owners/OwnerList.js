@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import "./owner.css"
 
 
 class OwnerList extends Component {
@@ -8,8 +9,16 @@ class OwnerList extends Component {
             <h3>Owners List</h3>
             {
                 this.props.owners.map(owner =>
-                    <div key={owner.id}>
-                        {owner.name} {owner.phoneNumber}
+                    <div key={owner.id} className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">
+                            {owner.name} { }
+                            {owner.phoneNumber}
+                                <button
+                                    onClick={() => this.props.deleteOwner(owner.id)}
+                                    className="card-link">Delete</button>
+                            </h5>
+                        </div>
                     </div>
                 )
             }
