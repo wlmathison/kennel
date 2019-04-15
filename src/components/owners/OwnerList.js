@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import "./employee.css"
+import "./owner.css"
 
 
-class EmployeeList extends Component {
+class OwnerList extends Component {
     render() {
         return (
-            <section className="employees content">
-            <h3>Employee List</h3>
+            <section className="owners content">
+            <h3>Owners List</h3>
             {
-                this.props.employees.map(employee =>
-                    <div key={employee.id} className="card">
+                this.props.owners.map(owner =>
+                    <div key={owner.id} className="card">
                         <div className="card-body">
                             <h5 className="card-title">
-                                {employee.name}
+                            {owner.name} { }
+                            {owner.phoneNumber}
                                 <button
-                                    onClick={() => this.props.deleteEmployee(employee.id)}
+                                    onClick={() => this.props.deleteOwner(owner.id)}
                                     className="card-link">Delete</button>
                             </h5>
                         </div>
@@ -26,4 +27,4 @@ class EmployeeList extends Component {
     }
 }
 
-export default EmployeeList
+export default OwnerList
