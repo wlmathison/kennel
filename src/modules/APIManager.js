@@ -1,22 +1,26 @@
 const remoteURL = "http://localhost:5002"
 
 export default Object.create(null, {
+    resource: {
+        value: ""
+    },
+    
     get: {
-        value: function (resource, id) {
-            return fetch(`${remoteURL}/${resource}/${id}`).then(results => results.json())
+        value: function (id) {
+            return fetch(`${remoteURL}/${this.resource}/${id}`).then(results => results.json())
         }
     },
     getAll: {
-        value: function (resource) {
-            return fetch(`${remoteURL}/${resource}`).then(results => results.json())
+        value: function () {
+            return fetch(`${remoteURL}/${this.resource}`).then(results => results.json())
         }
     },
     removeAndList: {
-        value: function (resource, id) {
-            return fetch(`${remoteURL}/${resource}/${id}`, {
+        value: function (id) {
+            return fetch(`${remoteURL}/${this.resource}/${id}`, {
                     method: "DELETE"
                 }).then(results => results.json())
-                .then(() => this.getAll(`${resource}`))
+                .then(() => this.getAll(`${this.resource}`))
         }
     }
 })
