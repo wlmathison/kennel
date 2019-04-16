@@ -22,11 +22,11 @@ class ApplicationViews extends Component {
     
         LocationManager.getAll()
             .then(locations => newState.locations = locations)
-            .then(AnimalManager.getAll)
+            .then(() => AnimalManager.getAll())
             .then(animals => newState.animals = animals)
-            .then(EmployeeManager.getAll)
+            .then(() => EmployeeManager.getAll())
             .then(employees => newState.employees = employees)
-            .then(OwnerManager.getAll)
+            .then(() => OwnerManager.getAll())
             .then(owners => newState.owners = owners)
             .then(() => this.setState(newState))
     }
