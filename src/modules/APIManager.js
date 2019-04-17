@@ -21,6 +21,7 @@ export default Object.create(null, {
             }).then(results => results.json())
         }
     },
+
     removeAndList: {
         value: function (id) {
             return fetch(`${remoteURL}/${this.resource}/${id}`, {

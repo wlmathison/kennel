@@ -9,8 +9,6 @@ export default class Animal extends Component {
     }
 
     render() {
-        let employee = this.props.employees.find(employee =>
-            employee.id === this.props.animal.employeeId)
 
         return (
             <section className="animal content">
@@ -21,12 +19,12 @@ export default class Animal extends Component {
                             {this.props.animal.name}
                                                     </h4>
                         <h6 className="card-title">{this.props.animal.breed}</h6>
-                        <h6 className="card-title">{employee.name}</h6>
+                        <h6 className="card-title">{this.props.employee.name}</h6>
                         <button onClick={
                             () => {
                                 this.setState(
                                     { saveDisabled: true },
-                                    () => this.props.dischargeAnimal(this.props.animal.id)
+                                    () => this.props.deleteAnimal(this.props.animal.id)
                                 )
                             }
                         }
