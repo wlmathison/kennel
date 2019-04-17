@@ -83,8 +83,7 @@ class ApplicationViews extends Component {
                         animal = { id: 404, name: "404", breed: "Dog not found" }
                     }
 
-                    return <AnimalDetail animal={animal}
-                        deleteAnimal={this.deleteAnimal} />
+                    return <AnimalDetail animal={animal} employees={this.state.employees} deleteAnimal={this.deleteAnimal} />
                 }} />
             </React.Fragment>
         )
