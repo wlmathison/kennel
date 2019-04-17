@@ -11,6 +11,7 @@ import EmployeeManager from "../modules/EmployeeManager"
 import OwnerManager from "../modules/OwnerManager"
 import AnimalDetail from "./animal/AnimalDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
+import OwnerDetail from "./owners/OwnerDetail"
 
 class ApplicationViews extends Component {
     state = {
@@ -48,13 +49,12 @@ class ApplicationViews extends Component {
             this.setState({ employees: employees })
         })
 
-    deleteOwner = id => {
-        OwnerManager.removeAndList(id)
-            .then(owners => this.setState({
-                owners: owners
-            })
-            )
-    }
+    deleteOwner = id => OwnerManager.delete(id)
+        .then(() => OwnerManager.getAll())
+        .then(owners => {
+            this.props.history.push("/owners")
+            this.setState({ owners: owners })
+        })
 
     render() {
         return (
@@ -69,7 +69,7 @@ class ApplicationViews extends Component {
                 <Route exact path="/employees" render={(props) => {
                     return <EmployeeList deleteEmployee={this.deleteEmployee} employees={this.state.employees} />
                 }} />
-                <Route path="/owners" render={(props) => {
+                <Route exact path="/owners" render={(props) => {
                     return <OwnerList deleteOwner={this.deleteOwner} owners={this.state.owners} />
                 }} />
                 <Route path="/animals/:animalId(\d+)" render={(props) => {
@@ -78,18 +78,15 @@ class ApplicationViews extends Component {
                         animal.id === parseInt(props.match.params.animalId)
                     )
                     let employee
-                    if(animal) {
+                    if (animal) {
                         employee = this.state.employees.find(employee =>
                             employee.id === animal.employeeId)
                     }
                     // If the animal wasn't found, create a default one
                     else if (!animal) {
-                        animal = { id: 404, name: "404", breed: "Dog not found", employeeId:"404" }
-                        employee = {id:404, name: ""}
+                        animal = { id: 404, name: "404", breed: "Dog not found", employeeId: "404" }
+                        employee = { id: 404, name: "" }
                     }
-
-
-
                     return <AnimalDetail animal={animal} employee={employee} deleteAnimal={this.deleteAnimal} />
                 }} />
                 <Route path="/employees/:employeeId(\d+)" render={(props) => {
@@ -97,13 +94,22 @@ class ApplicationViews extends Component {
                     let employee = this.state.employees.find(employee =>
                         employee.id === parseInt(props.match.params.employeeId)
                     )
-
                     // If the employee wasn't found, create a default one
                     if (!employee) {
-                        employee = { id: 404, name: "Employee not found" }
+                        employee = { id: 404, name: "404 Employee not found" }
                     }
-
                     return <EmployeeDetail employee={employee} deleteEmployee={this.deleteEmployee} />
+                }} />
+                <Route path="/owners/:ownerId(\d+)" render={(props) => {
+                    // Find the owner with the id of the route parameter
+                    let owner = this.state.owners.find(owner =>
+                        owner.id === parseInt(props.match.params.ownerId)
+                    )
+                    // If the owner wasn't found, create a default one
+                    if (!owner) {
+                        owner = { id: 404, name: "404 Owner not found" }
+                    }
+                    return <OwnerDetail owner={owner} deleteOwner={this.deleteOwner} />
                 }} />
             </React.Fragment>
         )
