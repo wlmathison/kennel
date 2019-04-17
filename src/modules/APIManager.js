@@ -4,7 +4,6 @@ export default Object.create(null, {
     resource: {
         value: ""
     },
-    
     get: {
         value: function (id) {
             return fetch(`${remoteURL}/${this.resource}/${id}`).then(results => results.json())
@@ -15,11 +14,19 @@ export default Object.create(null, {
             return fetch(`${remoteURL}/${this.resource}`).then(results => results.json())
         }
     },
+    delete: {
+        value: function (id) {
+            return fetch(`${remoteURL}/${this.resource}/${id}`, {
+                method: "DELETE"
+            }).then(results => results.json())
+        }
+    },
+
     removeAndList: {
         value: function (id) {
             return fetch(`${remoteURL}/${this.resource}/${id}`, {
-                    method: "DELETE"
-                }).then(results => results.json())
+                method: "DELETE"
+            }).then(results => results.json())
                 .then(() => this.getAll(`${this.resource}`))
         }
     }
