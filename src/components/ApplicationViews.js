@@ -12,6 +12,7 @@ import OwnerManager from "../modules/OwnerManager"
 import AnimalDetail from "./animal/AnimalDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
 import OwnerDetail from "./owners/OwnerDetail"
+import LocationDetail from "./location/LocationDetail"
 
 class ApplicationViews extends Component {
     state = {
@@ -54,6 +55,13 @@ class ApplicationViews extends Component {
         .then(owners => {
             this.props.history.push("/owners")
             this.setState({ owners: owners })
+        })
+
+    deleteLocation = id => LocationManager.delete(id)
+        .then(() => LocationManager.getAll())
+        .then(locations => {
+            this.props.history.push("/")
+            this.setState({ locations: locations })
         })
 
     render() {
@@ -110,6 +118,17 @@ class ApplicationViews extends Component {
                         owner = { id: 404, name: "404 Owner not found" }
                     }
                     return <OwnerDetail owner={owner} deleteOwner={this.deleteOwner} />
+                }} />
+                <Route path="/locations/:locationId(\d+)" render={(props) => {
+                    // Find the location with the id of the route parameter
+                    let location = this.state.locations.find(location =>
+                        location.id === parseInt(props.match.params.locationId)
+                    )
+                    // If the location wasn't found, create a default one
+                    if (!location) {
+                        location = { id: 404, name: "404 Location not found" }
+                    }
+                    return <LocationDetail location={location} deleteLocation={this.deleteLocation} />
                 }} />
             </React.Fragment>
         )
