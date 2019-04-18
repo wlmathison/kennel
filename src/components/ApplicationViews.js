@@ -13,6 +13,7 @@ import AnimalDetail from "./animal/AnimalDetail"
 import EmployeeDetail from "./employee/EmployeeDetail"
 import OwnerDetail from "./owners/OwnerDetail"
 import LocationDetail from "./location/LocationDetail"
+import AnimalForm from "./animal/AnimalForm"
 
 class ApplicationViews extends Component {
     state = {
@@ -43,6 +44,15 @@ class ApplicationViews extends Component {
             this.setState({ animals: animals })
         })
 
+    addAnimal = animal =>
+        AnimalManager.post(animal)
+            .then(() => AnimalManager.getAll())
+            .then(animals =>
+                this.setState({
+                    animals: animals
+                })
+            );
+
     deleteEmployee = id => EmployeeManager.delete(id)
         .then(() => EmployeeManager.getAll())
         .then(employees => {
@@ -70,9 +80,17 @@ class ApplicationViews extends Component {
                 <Route exact path="/" render={(props) => {
                     return <LocationList locations={this.state.locations} />
                 }} />
-                <Route exact path="/animals" render={() => {
-                    return <AnimalList deleteAnimal={this.deleteAnimal}
+
+                <Route exact path="/animals" render={(props) => {
+                    return <AnimalList {...props}
+                        deleteAnimal={this.deleteAnimal}
                         animals={this.state.animals} />
+                }} />
+                {/* Our shiny new route. We pass employees to the AnimalForm so a dropdown can be populated */}
+                <Route path="/animals/new" render={(props) => {
+                    return <AnimalForm {...props}
+                        addAnimal={this.addAnimal}
+                        employees={this.state.employees} />
                 }} />
                 <Route exact path="/employees" render={(props) => {
                     return <EmployeeList deleteEmployee={this.deleteEmployee} employees={this.state.employees} />
