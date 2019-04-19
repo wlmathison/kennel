@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from "react-router-dom"
 import React, { Component } from "react"
 import { withRouter } from 'react-router'
 import AnimalList from './animal/AnimalList'
@@ -16,6 +16,7 @@ import LocationDetail from "./location/LocationDetail"
 import AnimalForm from "./animal/AnimalForm"
 import OwnerForm from "./owners/OwnerForm"
 import EmployeeForm from "./employee/EmployeeForm"
+import Login from './authentication/Login'
 
 class ApplicationViews extends Component {
     state = {
@@ -24,6 +25,8 @@ class ApplicationViews extends Component {
         employees: [],
         owners: []
     }
+    // Check if credentials are in local storage
+    isAuthenticated = () => sessionStorage.getItem("credentials") !== null
 
     componentDidMount() {
         const newState = {}
@@ -92,14 +95,22 @@ class ApplicationViews extends Component {
     render() {
         return (
             <React.Fragment>
+                <Route path="/login" component={Login} />
                 <Route exact path="/" render={(props) => {
-                    return <LocationList locations={this.state.locations} />
+                    if (this.isAuthenticated()) {
+                        return <LocationList locations={this.state.locations} {...props} />
+                    } else {
+                        return <Redirect to="/login" />
+                    }
                 }} />
-
                 <Route exact path="/animals" render={(props) => {
-                    return <AnimalList {...props}
-                        deleteAnimal={this.deleteAnimal}
-                        animals={this.state.animals} />
+                    if (this.isAuthenticated()) {
+                        return <AnimalList {...props}
+                            deleteAnimal={this.deleteAnimal}
+                            animals={this.state.animals} />
+                    } else {
+                        return <Redirect to="/login" />
+                    }
                 }} />
                 {/* Our shiny new route. We pass employees to the AnimalForm so a dropdown can be populated */}
                 <Route path="/animals/new" render={(props) => {
@@ -107,14 +118,23 @@ class ApplicationViews extends Component {
                         addAnimal={this.addAnimal}
                         employees={this.state.employees} />
                 }} />
-                <Route exact path="/employees" render={(props) => {
-                    return <EmployeeList deleteEmployee={this.deleteEmployee} employees={this.state.employees} {...props}/>
+                <Route exact path="/employees" render={props => {
+                    if (this.isAuthenticated()) {
+                        return <EmployeeList deleteEmployee={this.deleteEmployee}
+                            employees={this.state.employees} {...props} />
+                    } else {
+                        return <Redirect to="/login" />
+                    }
                 }} />
                 <Route path="/employees/new" render={(props) => {
                     return <EmployeeForm addEmployee={this.addEmployee} employees={this.state.employees} {...props} />
-                }}  />
+                }} />
                 <Route exact path="/owners" render={(props) => {
-                    return <OwnerList {...props} deleteOwner={this.deleteOwner} owners={this.state.owners} />
+                    if (this.isAuthenticated()) {
+                        return <OwnerList {...props} deleteOwner={this.deleteOwner} owners={this.state.owners} />
+                    } else {
+                        return <Redirect to="/login" />
+                    }
                 }} />
                 <Route path="/owners/new" render={(props) => {
                     return <OwnerForm {...props} addOwner={this.addOwner} owners={this.state.owners} />
