@@ -14,6 +14,8 @@ import EmployeeDetail from "./employee/EmployeeDetail"
 import OwnerDetail from "./owners/OwnerDetail"
 import LocationDetail from "./location/LocationDetail"
 import AnimalForm from "./animal/AnimalForm"
+import OwnerForm from "./owners/OwnerForm"
+import EmployeeForm from "./employee/EmployeeForm"
 
 class ApplicationViews extends Component {
     state = {
@@ -60,12 +62,25 @@ class ApplicationViews extends Component {
             this.setState({ employees: employees })
         })
 
+    addEmployee = employee => EmployeeManager.post(employee)
+        .then(() => EmployeeManager.getAll())
+        .then(employees => {
+            this.setState({ employees: employees })
+        })
+
     deleteOwner = id => OwnerManager.delete(id)
         .then(() => OwnerManager.getAll())
         .then(owners => {
             this.props.history.push("/owners")
             this.setState({ owners: owners })
         })
+
+    addOwner = owner => OwnerManager.post(owner)
+        .then(() => OwnerManager.getAll())
+        .then(owners =>
+            this.setState({
+                owners: owners
+            }))
 
     deleteLocation = id => LocationManager.delete(id)
         .then(() => LocationManager.getAll())
@@ -93,10 +108,16 @@ class ApplicationViews extends Component {
                         employees={this.state.employees} />
                 }} />
                 <Route exact path="/employees" render={(props) => {
-                    return <EmployeeList deleteEmployee={this.deleteEmployee} employees={this.state.employees} />
+                    return <EmployeeList deleteEmployee={this.deleteEmployee} employees={this.state.employees} {...props}/>
                 }} />
+                <Route path="/employees/new" render={(props) => {
+                    return <EmployeeForm addEmployee={this.addEmployee} employees={this.state.employees} {...props} />
+                }}  />
                 <Route exact path="/owners" render={(props) => {
-                    return <OwnerList deleteOwner={this.deleteOwner} owners={this.state.owners} />
+                    return <OwnerList {...props} deleteOwner={this.deleteOwner} owners={this.state.owners} />
+                }} />
+                <Route path="/owners/new" render={(props) => {
+                    return <OwnerForm {...props} addOwner={this.addOwner} owners={this.state.owners} />
                 }} />
                 <Route path="/animals/:animalId(\d+)" render={(props) => {
                     // Find the animal with the id of the route parameter
