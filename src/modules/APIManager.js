@@ -21,13 +21,23 @@ export default Object.create(null, {
             }).then(results => results.json())
         }
     },
-
     removeAndList: {
         value: function (id) {
             return fetch(`${remoteURL}/${this.resource}/${id}`, {
                 method: "DELETE"
             }).then(results => results.json())
                 .then(() => this.getAll(`${this.resource}`))
+        }
+    },
+    post: {
+        value: function (newItem) {
+            return fetch(`${remoteURL}/${this.resource}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newItem)
+            }).then(data => data.json())
         }
     }
 })
