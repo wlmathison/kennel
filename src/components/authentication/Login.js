@@ -24,19 +24,26 @@ export default class Login extends Component {
             For now, just store the email and password that
             the customer enters into local storage.
         */
-        sessionStorage.setItem(
-            "credentials",
-            JSON.stringify({
-                email: this.state.email,
-                password: this.state.password
-            })
-        )
-        this.props.history.push("/")
+        if (this.state.email === "") {
+            window.alert("Please enter email address")
+        } else if (this.state.password === "") {
+            window.alert("Please enter password")
+        } else {
+            sessionStorage.setItem(
+                "credentials",
+                JSON.stringify({
+                    email: this.state.email,
+                    password: this.state.password
+                })
+            )
+            this.props.history.push("/")
+        }
+
     }
 
     render() {
         return (
-            <form className ="content" onSubmit={this.handleLogin}>
+            <form className="content" onSubmit={this.handleLogin}>
                 <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <label htmlFor="inputEmail">
                     Email address

@@ -98,7 +98,7 @@ class ApplicationViews extends Component {
                 <Route path="/login" component={Login} />
                 <Route exact path="/" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <LocationList locations={this.state.locations} {...props} />
+                        return <LocationList locations={this.state.locations} employees={this.state.employees} {...props} />
                     } else {
                         return <Redirect to="/login" />
                     }
@@ -120,8 +120,8 @@ class ApplicationViews extends Component {
                 }} />
                 <Route exact path="/employees" render={props => {
                     if (this.isAuthenticated()) {
-                        return <EmployeeList deleteEmployee={this.deleteEmployee}
-                            employees={this.state.employees} {...props} />
+                        return <EmployeeList deleteEmployee={this.deleteEmployee} deleteAnimal={this.deleteAnimal}
+                            employees={this.state.employees} animals={this.state.animals} {...props} />
                     } else {
                         return <Redirect to="/login" />
                     }
