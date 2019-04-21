@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from "react-router-dom"
-import dog from "./DogIcon.svg"
+import AnimalCard from "./AnimalCard"
 import "./animal.css"
 
 class AnimalList extends Component {
@@ -22,16 +22,13 @@ class AnimalList extends Component {
                     {
                         this.props.animals.map(animal =>
                             <div key={animal.id} className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">
-                                        <img src={dog} className="icon--dog" alt="dog" />
-                                        {animal.name}
-                                        <Link className="nav-link" to={`/animals/${animal.id}`}>Details</Link>
-                                        <button
-                                            onClick={() => this.props.deleteAnimal(animal.id)}
-                                            className="card-link">Delete</button>
-                                    </h5>
-                                </div>
+                                <AnimalCard  animal={animal} {...this.props} />
+                                <h5 className="card-title">
+                                    <Link className="nav-link" to={`/animals/${animal.id}`}>Details</Link>
+                                    <a href="/animals"
+                                        onClick={() => this.props.deleteAnimal(animal.id)}
+                                        className="card-link">Discharge</a>
+                                </h5>
                             </div>
                         )
                     }
