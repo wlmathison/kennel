@@ -24,7 +24,7 @@ export default class Employee extends Component {
                             }
                         }
                             disabled={this.state.saveDisabled}
-                            className="card-link">Fire</button>
+                            className="card-link btn btn-danger">Fire</button>
                     </div>
                 </div>
             </section>

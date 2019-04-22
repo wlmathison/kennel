@@ -5,7 +5,7 @@ export default class Location extends Component {
     state = {
         saveDisabled: false
     }
-
+    
     render() {
         return (
             <section className="locations content">
@@ -26,7 +26,7 @@ export default class Location extends Component {
                             }
                         }
                             disabled={this.state.saveDisabled}
-                            className="card-link">Delete</button>
+                            className="card-link btn btn-danger">Delete</button>
                     </div>
                 </div>
             </section>

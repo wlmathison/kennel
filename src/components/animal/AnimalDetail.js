@@ -29,7 +29,7 @@ export default class Animal extends Component {
                             }
                         }
                             disabled={this.state.saveDisabled}
-                            className="card-link">Discharge</button>
+                            className="card-link btn btn-danger">Discharge</button>
                     </div>
                 </div>
             </section>

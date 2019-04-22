@@ -19,6 +19,7 @@ import EmployeeForm from "./employee/EmployeeForm"
 import Login from './authentication/Login'
 import AnimalEditForm from "./animal/AnimalEditForm"
 import EmployeeEditForm from "./employee/EmployeeEditForm"
+import OwnerEditForm from "./owners/OwnerEditForm"
 
 class ApplicationViews extends Component {
     state = {
@@ -106,6 +107,16 @@ class ApplicationViews extends Component {
             this.setState({
                 owners: owners
             }))
+
+    updateOwner = (editedOwnerObject) => {
+        return OwnerManager.put(editedOwnerObject)
+            .then(() => OwnerManager.getAll())
+            .then(owners => {
+                this.setState({
+                    owners: owners
+                })
+            })
+    }
 
     deleteLocation = id => LocationManager.delete(id)
         .then(() => LocationManager.getAll())
@@ -198,7 +209,7 @@ class ApplicationViews extends Component {
                     return <EmployeeEditForm {...props} employees={this.state.employees}
                         locations={this.state.locations} updateEmployee={this.updateEmployee} />
                 }} />
-                <Route path="/owners/:ownerId(\d+)" render={(props) => {
+                <Route exact path="/owners/:ownerId(\d+)" render={(props) => {
                     // Find the owner with the id of the route parameter
                     let owner = this.state.owners.find(owner =>
                         owner.id === parseInt(props.match.params.ownerId)
@@ -208,6 +219,9 @@ class ApplicationViews extends Component {
                         owner = { id: 404, name: "404 Owner not found" }
                     }
                     return <OwnerDetail owner={owner} deleteOwner={this.deleteOwner} />
+                }} />
+                <Route path="/owners/:ownerId(\d+)/edit" render={(props) => {
+                    return <OwnerEditForm {...props} owners={this.state.owners} updateOwner={this.updateOwner} />
                 }} />
                 <Route path="/locations/:locationId(\d+)" render={(props) => {
                     // Find the location with the id of the route parameter

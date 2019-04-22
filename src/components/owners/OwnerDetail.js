@@ -26,7 +26,7 @@ export default class Owner extends Component {
                             }
                         }
                             disabled={this.state.saveDisabled}
-                            className="card-link">Delete</button>
+                            className="card-link btn btn-danger">Delete</button>
                     </div>
                 </div>
             </section>
