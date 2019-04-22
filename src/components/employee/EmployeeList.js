@@ -31,6 +31,12 @@ class EmployeeList extends Component {
                                     <div>
                                         <h5 className="card-title">
                                             <Link className="nav-link" to={`/employees/${employee.id}`}>Details</Link>
+                                            <button
+                                                className="btn btn-success"
+                                                onClick={() => this.props.history.push(`/employees/${employee.id}/edit`)}
+                                            >
+                                                Edit
+                                        </button>
                                             <a href="/employees"
                                                 onClick={() => this.props.deleteEmployee(employee.id)}
                                                 className="card-link">Delete</a>

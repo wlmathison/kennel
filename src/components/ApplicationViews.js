@@ -17,6 +17,9 @@ import AnimalForm from "./animal/AnimalForm"
 import OwnerForm from "./owners/OwnerForm"
 import EmployeeForm from "./employee/EmployeeForm"
 import Login from './authentication/Login'
+import AnimalEditForm from "./animal/AnimalEditForm"
+import EmployeeEditForm from "./employee/EmployeeEditForm"
+import OwnerEditForm from "./owners/OwnerEditForm"
 
 class ApplicationViews extends Component {
     state = {
@@ -58,6 +61,16 @@ class ApplicationViews extends Component {
                 })
             );
 
+    updateAnimal = (editedAnimalObject) => {
+        return AnimalManager.put(editedAnimalObject)
+            .then(() => AnimalManager.getAll())
+            .then(animals => {
+                this.setState({
+                    animals: animals
+                })
+            })
+    }
+
     deleteEmployee = id => EmployeeManager.delete(id)
         .then(() => EmployeeManager.getAll())
         .then(employees => {
@@ -70,6 +83,16 @@ class ApplicationViews extends Component {
         .then(employees => {
             this.setState({ employees: employees })
         })
+
+    updateEmployee = (editedEmployeeObject) => {
+        return EmployeeManager.put(editedEmployeeObject)
+            .then(() => EmployeeManager.getAll())
+            .then(employees => {
+                this.setState({
+                    employees: employees
+                })
+            })
+    }
 
     deleteOwner = id => OwnerManager.delete(id)
         .then(() => OwnerManager.getAll())
@@ -84,6 +107,16 @@ class ApplicationViews extends Component {
             this.setState({
                 owners: owners
             }))
+
+    updateOwner = (editedOwnerObject) => {
+        return OwnerManager.put(editedOwnerObject)
+            .then(() => OwnerManager.getAll())
+            .then(owners => {
+                this.setState({
+                    owners: owners
+                })
+            })
+    }
 
     deleteLocation = id => LocationManager.delete(id)
         .then(() => LocationManager.getAll())
@@ -139,7 +172,7 @@ class ApplicationViews extends Component {
                 <Route path="/owners/new" render={(props) => {
                     return <OwnerForm {...props} addOwner={this.addOwner} owners={this.state.owners} />
                 }} />
-                <Route path="/animals/:animalId(\d+)" render={(props) => {
+                <Route exact path="/animals/:animalId(\d+)" render={(props) => {
                     // Find the animal with the id of the route parameter
                     let animal = this.state.animals.find(animal =>
                         animal.id === parseInt(props.match.params.animalId)
@@ -156,7 +189,12 @@ class ApplicationViews extends Component {
                     }
                     return <AnimalDetail animal={animal} employee={employee} deleteAnimal={this.deleteAnimal} />
                 }} />
-                <Route path="/employees/:employeeId(\d+)" render={(props) => {
+                <Route
+                    path="/animals/:animalId(\d+)/edit" render={(props) => {
+                        return <AnimalEditForm {...props} employees={this.state.employees} updateAnimal={this.updateAnimal} />
+                    }}
+                />
+                <Route exact path="/employees/:employeeId(\d+)" render={(props) => {
                     // Find the employee with the id of the route parameter
                     let employee = this.state.employees.find(employee =>
                         employee.id === parseInt(props.match.params.employeeId)
@@ -167,7 +205,11 @@ class ApplicationViews extends Component {
                     }
                     return <EmployeeDetail employee={employee} deleteEmployee={this.deleteEmployee} />
                 }} />
-                <Route path="/owners/:ownerId(\d+)" render={(props) => {
+                <Route path="/employees/:employeeId(\d+)/edit" render={(props) => {
+                    return <EmployeeEditForm {...props} employees={this.state.employees}
+                        locations={this.state.locations} updateEmployee={this.updateEmployee} />
+                }} />
+                <Route exact path="/owners/:ownerId(\d+)" render={(props) => {
                     // Find the owner with the id of the route parameter
                     let owner = this.state.owners.find(owner =>
                         owner.id === parseInt(props.match.params.ownerId)
@@ -177,6 +219,9 @@ class ApplicationViews extends Component {
                         owner = { id: 404, name: "404 Owner not found" }
                     }
                     return <OwnerDetail owner={owner} deleteOwner={this.deleteOwner} />
+                }} />
+                <Route path="/owners/:ownerId(\d+)/edit" render={(props) => {
+                    return <OwnerEditForm {...props} owners={this.state.owners} updateOwner={this.updateOwner} />
                 }} />
                 <Route path="/locations/:locationId(\d+)" render={(props) => {
                     // Find the location with the id of the route parameter
